@@ -290,7 +290,7 @@ namespace GTFS.Test
 
             // test result.
             Assert.IsNotNull(feed.StopTimes);
-            var stopTimes = feed.StopTimes.ToList();
+            var stopTimes = feed.StopTimes.OrderBy(st => st.TripId).ToList();
             Assert.AreEqual(28, stopTimes.Count);
 
             // @ 1: trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_time,shape_dist_traveled
