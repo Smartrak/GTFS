@@ -79,8 +79,8 @@ namespace GTFS.DB.SQLite.Collections
 
                 command.Parameters[0].Value = _id;
                 command.Parameters[1].Value = stopTime.TripId;
-                command.Parameters[2].Value = stopTime.ArrivalTime.TotalSeconds;
-                command.Parameters[3].Value = stopTime.DepartureTime.TotalSeconds;
+                command.Parameters[2].Value = stopTime.ArrivalTime.HasValue ? (int?)stopTime.ArrivalTime.Value.TotalSeconds : null;
+                command.Parameters[3].Value = stopTime.DepartureTime.HasValue ? (int?)stopTime.DepartureTime.Value.TotalSeconds : null;
                 command.Parameters[4].Value = stopTime.StopId;
                 command.Parameters[5].Value = stopTime.StopSequence;
                 command.Parameters[6].Value = stopTime.StopHeadsign;

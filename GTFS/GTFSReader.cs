@@ -69,7 +69,13 @@ namespace GTFS
             };
             this.TimeOfDayReader = (timeOfDayString) =>
             {
-                if (timeOfDayString == null || !(timeOfDayString.Length == 8 || timeOfDayString.Length == 7)) { throw new ArgumentException(string.Format("Invalid timeOfDayString: {0}", timeOfDayString)); }
+                if (timeOfDayString == "")
+                    return null;
+                
+                if (timeOfDayString == null || !(timeOfDayString.Length == 8 || timeOfDayString.Length == 7))
+                {
+                    throw new ArgumentException(string.Format("Invalid timeOfDayString: {0}", timeOfDayString));
+                }
 
                 var timeOfDay = new TimeOfDay();
                 if (timeOfDayString.Length == 8)
@@ -142,7 +148,7 @@ namespace GTFS
         /// <summary>
         /// Gets or sets the time of day reader.
         /// </summary>
-        public Func<string, TimeOfDay> TimeOfDayReader { get; set; }
+        public Func<string, TimeOfDay?> TimeOfDayReader { get; set; }
 
         /// <summary>
         /// Reads a timeofday.
@@ -151,7 +157,7 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private TimeOfDay ReadTimeOfDay(string name, string fieldName, string value)
+        private TimeOfDay? ReadTimeOfDay(string name, string fieldName, string value)
         {
             try
             {
@@ -453,7 +459,6 @@ namespace GTFS
                     var entity = parser.Invoke(feed, header, enumerator.Current);
                     entities.Add(entity);
                 }
-                entities.Sort();
                 foreach (var entity in entities)
                 {
                     addDelegate.Invoke(entity);
@@ -1119,7 +1124,7 @@ namespace GTFS
                     stopTime.ArrivalTime = this.ReadTimeOfDay(header.Name, fieldName, this.ParseFieldString(header.Name, fieldName, value));
                     break;
                 case "departure_time":
-                    stopTime.DepartureTime = this.TimeOfDayReader(this.ParseFieldString(header.Name, fieldName, value));
+                    stopTime.DepartureTime = this.ReadTimeOfDay(header.Name, fieldName, this.ParseFieldString(header.Name, fieldName, value));
                     break;
                 case "stop_id":
                     stopTime.StopId = this.ParseFieldString(header.Name, fieldName, value);

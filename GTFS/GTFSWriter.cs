@@ -938,12 +938,13 @@ namespace GTFS
         /// <param name="fieldName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private string WriteFieldTimeOfDay(string name, string fieldName, TimeOfDay value)
+        private string WriteFieldTimeOfDay(string name, string fieldName, TimeOfDay? value)
         {
-            return string.Format("{0}:{1}:{2}",
-                value.Hours.ToString("00"),
-                value.Minutes.ToString("00"),
-                value.Seconds.ToString("00"));
+            return value.HasValue ? "" : 
+                string.Format("{0}:{1}:{2}",
+                value.Value.Hours.ToString("00"),
+                value.Value.Minutes.ToString("00"),
+                value.Value.Seconds.ToString("00"));
         }
 
         /// <summary>
