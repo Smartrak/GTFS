@@ -129,25 +129,5 @@ namespace GTFS.Test.Validation
             // validate.
             Assert.IsFalse(GTFSFeedValidation.Validate(feed));
         }
-
-        /// <summary>
-        /// Tests validation when a stop time is missing.
-        /// </summary>
-        [Test]
-        public void TestMissingStopTime()
-        {
-            // create the reader.
-            var reader = new GTFSReader<GTFSFeed>();
-            var source = GTFSAssert.BuildSource();
-
-            // execute the reader.
-            var feed = reader.Read(source);
-
-            // remove.
-            (feed.StopTimes.Get() as List<StopTime>).RemoveAt(0);
-
-            // validate.
-            Assert.IsFalse(GTFSFeedValidation.Validate(feed));
-        }
     }
 }

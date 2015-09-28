@@ -141,30 +141,51 @@ namespace GTFS.Validation
                 }
             }
             // check all sequences.
-            var sequences = new HashSet<uint>();
             foreach(var stopTimesPair in stopTimesIndex)
             {
-                uint min = uint.MaxValue;
-                uint max = uint.MinValue;
-                foreach(var stopTime in stopTimesPair.Value)
+                if (stopTimesPair.Value.Count < 2)
                 {
-                    if (stopTime.StopSequence < min)
-                    {
-                        min = stopTime.StopSequence;
-                    }
-                    if(stopTime.StopSequence > max)
-                    {
-                        max = stopTime.StopSequence;
-                    }
-                    sequences.Add(stopTime.StopSequence);
-                }
-
-                if(min != 0 && max != sequences.Count)
-                { // oeps, unknown id.
-                    messages = string.Format("Missing sequence found in stop_times for trip id {0}.", stopTimesPair.Key);
+                    messages = string.Format("Trip {0} does not have at least 2 stop points.", stopTimesPair.Key);
                     return false;
                 }
-                sequences.Clear();
+
+                var sequences = new HashSet<uint>();
+                StopTime firstStopTime = null;
+                StopTime lastStopTime = null;
+                foreach(var stopTime in stopTimesPair.Value)
+                {
+                    if (sequences.Contains(stopTime.StopSequence))
+                    {
+                        messages = string.Format("Duplicate sequence number {0} found in trip {1}", stopTime.StopSequence, stopTime.TripId);
+                        return false;
+                    }
+                    sequences.Add(stopTime.StopSequence);
+
+                    if (firstStopTime == null || firstStopTime.StopSequence > stopTime.StopSequence)
+                    {
+                        firstStopTime = stopTime;
+                    }
+                    if (lastStopTime == null || lastStopTime.StopSequence < stopTime.StopSequence)
+                    {
+                        lastStopTime = stopTime;
+                    }
+                }
+
+                if (firstStopTime == null || lastStopTime == null)
+                {
+                    throw new Exception("Error finding start and end points for trip: " + stopTimesPair.Key);
+                }
+
+                if (!firstStopTime.ArrivalTime.HasValue || !firstStopTime.DepartureTime.HasValue)
+                {
+                    messages = string.Format("Trip {0} does not have both arrival and departure time specified for the first stop.", stopTimesPair.Key);
+                    return false;
+                }
+                if (!lastStopTime.ArrivalTime.HasValue || !lastStopTime.DepartureTime.HasValue)
+                {
+                    messages = string.Format("Trip {0} does not have both arrival and departure time specified for the last stop.", stopTimesPair.Key);
+                    return false;
+                }
             }
             messages = string.Empty;
             return true;
