@@ -99,8 +99,8 @@ namespace GTFS.DB.SQLite.Collections
                 return new Shape()
                 {
                     Id = x.GetString(0),
-                    Latitude = x.GetDouble(1),
-                    Longitude = x.GetDouble(2),
+                    Latitude = x.GetDecimal(1),
+                    Longitude = x.GetDecimal(2),
                     Sequence = (uint)x.GetInt64(3),
                     DistanceTravelled = x.IsDBNull(4) ? null : (double?)x.GetDouble(4)
                 };

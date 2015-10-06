@@ -42,14 +42,14 @@ namespace GTFS.Entities
         /// </summary>
         [Required]
         [FieldName("shape_pt_lat")]
-        public double Latitude  { get; set; }
+        public decimal Latitude  { get; set; }
 
         /// <summary>
         /// Gets or sets a shape point's longitude with a shape ID. The field value must be a valid WGS 84 longitude value from -180 to 180. Each row in shapes.txt represents a shape point in your shape definition.
         /// </summary>
         [Required]
         [FieldName("shape_pt_lon")]
-        public double Longitude { get; set; }
+        public decimal Longitude { get; set; }
 
         /// <summary>
         /// Gets or sets the sequence order along the shape. The values for shape_pt_sequence must be non-negative integers, and they must increase along the trip. 

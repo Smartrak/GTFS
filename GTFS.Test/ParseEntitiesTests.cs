@@ -284,8 +284,8 @@ namespace GTFS.Test
             Assert.AreEqual("FUR_CREEK_RES", stops[idx].Id);
             Assert.AreEqual("Furnace Creek Resort (Demo)", stops[idx].Name);
             Assert.AreEqual(string.Empty, stops[idx].Description);
-            Assert.AreEqual(36.425288, stops[idx].Latitude);
-            Assert.AreEqual(-117.133162, stops[idx].Longitude);
+            Assert.AreEqual(36.425288M, stops[idx].Latitude);
+            Assert.AreEqual(-117.133162M, stops[idx].Longitude);
             Assert.AreEqual(string.Empty, stops[idx].Url);
 
             // @ 10: AMV,Amargosa Valley (Demo),,36.641496,-116.40094,,
@@ -293,8 +293,8 @@ namespace GTFS.Test
             Assert.AreEqual("AMV", stops[idx].Id);
             Assert.AreEqual("Amargosa Valley (Demo)", stops[idx].Name);
             Assert.AreEqual(string.Empty, stops[idx].Description);
-            Assert.AreEqual(36.641496, stops[idx].Latitude);
-            Assert.AreEqual(-116.40094, stops[idx].Longitude);
+            Assert.AreEqual(36.641496M, stops[idx].Latitude);
+            Assert.AreEqual(-116.40094M, stops[idx].Longitude);
             Assert.AreEqual(string.Empty, stops[idx].Url);
         }
 
@@ -318,7 +318,7 @@ namespace GTFS.Test
             var stopTimes = feed.StopTimes.OrderBy(st => st.TripId).ToList();
             Assert.AreEqual(28, stopTimes.Count);
 
-            // @ 1: trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_time,shape_dist_traveled
+            // @ 1: trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_time,shape_dist_traveled,timepoint
             // @ SORTED: AAMV1,8:00:00,8:00:00,BEATTY_AIRPORT,1
             int idx = 0;
             Assert.AreEqual("AAMV1", stopTimes[idx].TripId);
@@ -330,8 +330,9 @@ namespace GTFS.Test
             Assert.AreEqual(null, stopTimes[idx].PickupType);
             Assert.AreEqual(null, stopTimes[idx].DropOffType);
             Assert.AreEqual(null, stopTimes[idx].ShapeDistTravelled);
+            Assert.AreEqual(null, stopTimes[idx].TimepointType);
 
-            // @ SORTED: STBA,6:20:00,6:20:00,BEATTY_AIRPORT,2,,,,
+            // @ SORTED: STBA,6:20:00,6:20:00,BEATTY_AIRPORT,2,,,,,0
             idx = 27;
             Assert.AreEqual("STBA", stopTimes[idx].TripId);
             Assert.AreEqual(new TimeOfDay() { Hours = 6, Minutes = 20 }, stopTimes[idx].ArrivalTime);
@@ -342,6 +343,7 @@ namespace GTFS.Test
             Assert.AreEqual(null, stopTimes[idx].PickupType);
             Assert.AreEqual(null, stopTimes[idx].DropOffType);
             Assert.AreEqual(string.Empty, stopTimes[idx].ShapeDistTravelled);
+            Assert.AreEqual(TimepointType.Approximate, stopTimes[idx].TimepointType);
         }
 
         /// <summary>

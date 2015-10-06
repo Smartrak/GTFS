@@ -92,6 +92,12 @@ namespace GTFS.Entities
         public string ShapeDistTravelled { get; set; }
 
         /// <summary>
+        /// Indicates whether the specified arrival and departure times for a stop are strictly adhered to by the transit vehicle or if they are instead approximate and/or interpolated times.
+        /// </summary>
+        [FieldName("timepoint")]
+        public TimepointType? TimepointType { get; set; }
+
+        /// <summary>
         /// Returns a description of this trip.
         /// </summary>
         /// <returns></returns>

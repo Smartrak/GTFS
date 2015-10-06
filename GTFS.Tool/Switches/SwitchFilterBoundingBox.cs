@@ -151,8 +151,8 @@ namespace GTFS.Tool.Switches
             return new ProcessorFeedFilter()
             { // create a bounding box filter.
                 Filter = new GTFS.Filters.GTFSFeedStopsFilter((s) => {
-                    return (s.Latitude < this.Right && s.Latitude <= this.Left) &&
-                        (s.Longitude < this.Top && s.Longitude <= this.Bottom);
+                    return ((double)s.Latitude < this.Right && (double)s.Latitude <= this.Left) &&
+                        ((double)s.Longitude < this.Top && (double)s.Longitude <= this.Bottom);
                 })
             };
         }

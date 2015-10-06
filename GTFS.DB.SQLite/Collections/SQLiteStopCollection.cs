@@ -72,8 +72,8 @@ namespace GTFS.DB.SQLite.Collections
                 command.Parameters.Add(new SQLiteParameter(@"stop_code", DbType.String));
                 command.Parameters.Add(new SQLiteParameter(@"stop_name", DbType.String));
                 command.Parameters.Add(new SQLiteParameter(@"stop_desc", DbType.String));
-                command.Parameters.Add(new SQLiteParameter(@"stop_lat", DbType.Double));
-                command.Parameters.Add(new SQLiteParameter(@"stop_lon", DbType.Double));
+                command.Parameters.Add(new SQLiteParameter(@"stop_lat", DbType.Decimal));
+                command.Parameters.Add(new SQLiteParameter(@"stop_lon", DbType.Decimal));
                 command.Parameters.Add(new SQLiteParameter(@"zone_id", DbType.String));
                 command.Parameters.Add(new SQLiteParameter(@"stop_url", DbType.String));
                 command.Parameters.Add(new SQLiteParameter(@"location_type", DbType.Int64));
@@ -148,8 +148,8 @@ namespace GTFS.DB.SQLite.Collections
                     Code = x.IsDBNull(1) ? null : x.GetString(1),
                     Name = x.IsDBNull(2) ? null : x.GetString(2),
                     Description = x.IsDBNull(3) ? null : x.GetString(3),
-                    Latitude = x.GetDouble(4),
-                    Longitude = x.GetDouble(5),
+                    Latitude = x.GetDecimal(4),
+                    Longitude = x.GetDecimal(5),
                     Zone = x.IsDBNull(6) ? null : x.GetString(6),
                     Url = x.IsDBNull(7) ? null : x.GetString(7),
                     LocationType = x.IsDBNull(8) ? null : (LocationType?)x.GetInt64(8),

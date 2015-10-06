@@ -75,7 +75,7 @@ namespace GTFS.Tool.Switches
                     { // create a bounding box filter.
                         Filter = new GTFS.Filters.GTFSFeedStopsFilter((s) =>
                         {
-                            return feature.Geometry.Covers(new Point(new Coordinate(s.Longitude, s.Latitude)));
+                            return feature.Geometry.Covers(new Point(new Coordinate((double)s.Longitude, (double)s.Latitude)));
                         })
                     };
                 }

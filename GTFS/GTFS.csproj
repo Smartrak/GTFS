@@ -62,6 +62,7 @@
     <Compile Include="Entities\Enumerations\PickupType.cs" />
     <Compile Include="Entities\Enumerations\RouteType.cs" />
     <Compile Include="Entities\Enumerations\TransferType.cs" />
+    <Compile Include="Entities\Enumerations\TimepointType.cs" />
     <Compile Include="Entities\Enumerations\WheelchairBoardingType.cs" />
     <Compile Include="Entities\FareAttribute.cs" />
     <Compile Include="Entities\FareRule.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="IO\CSV\CSVStreamWriter.cs" />
     <Compile Include="IO\CSV\ICSVReader.cs" />
     <Compile Include="IO\CSV\ICSVWriter.cs" />
+    <Compile Include="IO\CSV\CSVUtil.cs" />
     <Compile Include="IO\GTFSSourceFileHeader.cs" />
     <Compile Include="IO\GTFSSourceFileLines.cs" />
     <Compile Include="IO\IGTFSSourceFile.cs" />

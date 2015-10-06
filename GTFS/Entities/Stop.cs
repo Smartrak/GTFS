@@ -62,14 +62,14 @@ namespace GTFS.Entities
         /// </summary>
         [Required]
         [FieldName("stop_lat")]
-        public double Latitude { get; set; }
+        public decimal Latitude { get; set; }
 
         /// <summary>
         /// Gets or sets the longitude of a stop or station. The field value must be a valid WGS 84 longitude value from -180 to 180.
         /// </summary>
         [Required]
         [FieldName("stop_lon")]
-        public double Longitude { get; set; }
+        public decimal Longitude { get; set; }
 
         /// <summary>
         /// Gets or sets the fare zone for a stop. Zone IDs are required if you want to provide fare information using fare rules. If this stop ID represents a station, the zone ID is ignored.

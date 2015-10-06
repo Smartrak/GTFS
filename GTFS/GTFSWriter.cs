@@ -446,8 +446,8 @@ namespace GTFS
 
                     // write agency details.
                     data[0] = this.WriteFieldString("shapes", "shape_id", entity.Id);
-                    data[1] = this.WriteFieldDouble("shapes", "shape_pt_lat", entity.Latitude);
-                    data[2] = this.WriteFieldDouble("shapes", "shape_pt_lon", entity.Longitude);
+                    data[1] = this.WriteFieldDecimal("shapes", "shape_pt_lat", entity.Latitude);
+                    data[2] = this.WriteFieldDecimal("shapes", "shape_pt_lon", entity.Longitude);
                     data[3] = this.WriteFieldUint("shapes", "shape_pt_sequence", entity.Sequence);
                     data[4] = this.WriteFieldDouble("shapes", "shape_dist_traveled", entity.DistanceTravelled);
                     file.Write(data);
@@ -498,8 +498,8 @@ namespace GTFS
                     data[1] = this.WriteFieldString("stops", "stop_code", entity.Code);
                     data[2] = this.WriteFieldString("stops", "stop_name", entity.Name, true);
                     data[3] = this.WriteFieldString("stops", "stop_desc", entity.Description, true);
-                    data[4] = this.WriteFieldDouble("stops", "stop_lat", entity.Latitude);
-                    data[5] = this.WriteFieldDouble("stops", "stop_lon", entity.Longitude);
+                    data[4] = this.WriteFieldDecimal("stops", "stop_lat", entity.Latitude);
+                    data[5] = this.WriteFieldDecimal("stops", "stop_lon", entity.Longitude);
                     data[6] = this.WriteFieldString("stops", "zone_id", entity.Zone);
                     data[7] = this.WriteFieldString("stops", "stop_url", entity.Url);
                     data[8] = this.WriteFieldLocationType("stops", "location_type", entity.LocationType);
@@ -851,6 +851,22 @@ namespace GTFS
         private string WriteFieldDouble(string name, string fieldName, double? value)
         {
             if(value.HasValue)
+            {
+                return value.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Writes a decimal.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private string WriteFieldDecimal(string name, string fieldName, decimal? value)
+        {
+            if (value.HasValue)
             {
                 return value.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
             }

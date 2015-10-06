@@ -880,7 +880,6 @@ namespace GTFS
 
             this.CheckRequiredField(header, header.Name, this.RouteMap, "route_short_name");
             this.CheckRequiredField(header, header.Name, this.RouteMap, "route_long_name");
-            this.CheckRequiredField(header, header.Name, this.RouteMap, "route_desc");
             this.CheckRequiredField(header, header.Name, this.RouteMap, "route_type");
 
             // parse/set all fields.
@@ -979,10 +978,10 @@ namespace GTFS
                     shape.Id = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "shape_pt_lat":
-                    shape.Latitude = this.ParseFieldDouble(header.Name, fieldName, value).Value;
+                    shape.Latitude = this.ParseFieldDecimal(header.Name, fieldName, value).Value;
                     break;
                 case "shape_pt_lon":
-                    shape.Longitude = this.ParseFieldDouble(header.Name, fieldName, value).Value;
+                    shape.Longitude = this.ParseFieldDecimal(header.Name, fieldName, value).Value;
                     break;
                 case "shape_pt_sequence":
                     shape.Sequence = this.ParseFieldUInt(header.Name, fieldName, value).Value;
@@ -1047,10 +1046,10 @@ namespace GTFS
                     stop.Description = this.ParseFieldString(header.Name, fieldName, value);
                     break;
                 case "stop_lat":
-                    stop.Latitude = this.ParseFieldDouble(header.Name, fieldName, value).Value;
+                    stop.Latitude = this.ParseFieldDecimal(header.Name, fieldName, value).Value;
                     break;
                 case "stop_lon":
-                    stop.Longitude = this.ParseFieldDouble(header.Name, fieldName, value).Value;
+                    stop.Longitude = this.ParseFieldDecimal(header.Name, fieldName, value).Value;
                     break;
                 case "zone_id":
                     stop.Zone = this.ParseFieldString(header.Name, fieldName, value);
@@ -1143,6 +1142,9 @@ namespace GTFS
                     break;
                 case "shape_dist_traveled":
                     stopTime.ShapeDistTravelled = this.ParseFieldString(header.Name, fieldName, value);
+                    break;
+                case "timepoint":
+                    stopTime.TimepointType = this.ParseFieldTimepointType(header.Name, fieldName, value);
                     break;
             }
         }
@@ -1513,6 +1515,36 @@ namespace GTFS
         }
 
         /// <summary>
+        /// Parses a timepoint-type field.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private TimepointType? ParseFieldTimepointType(string name, string fieldName, string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            { // there is no value.
+                return null;
+            }
+
+            // clean first.
+            value = this.CleanFieldValue(value);
+
+            //0 - Times are considered approximate
+            //1 - Times are considered exact
+
+            switch (value)
+            {
+                case "0":
+                    return TimepointType.Approximate;
+                case "1":
+                    return TimepointType.Exact;
+            }
+            throw new GTFSParseException(name, fieldName, value);
+        }
+
+        /// <summary>
         /// Parses a drop-off-type field.
         /// </summary>
         /// <param name="name"></param>
@@ -1699,6 +1731,31 @@ namespace GTFS
         }
 
         /// <summary>
+        /// Parses a decimal field.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected virtual decimal? ParseFieldDecimal(string name, string fieldName, string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            { // there is no value.
+                return null;
+            }
+
+            // clean first.
+            value = this.CleanFieldValue(value);
+
+            decimal result;
+            if (!decimal.TryParse(value, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out result))
+            { // parsing failed!
+                throw new GTFSParseException(name, fieldName, value);
+            }
+            return result;
+        }
+
+        /// <summary>
         /// Parses a boolean field.
         /// </summary>
         /// <param name="name"></param>
@@ -1735,18 +1792,8 @@ namespace GTFS
             if (!_strict)
             { // no cleaning when strict!
                 value = value.Trim();
-                if (value != null && value.Length > 0)
-                { // test some stuff.
-                    if (value.Length >= 2)
-                    { // test for quotes
-                        if (value[0] == '"' &&
-                            value[value.Length - 1] == '"')
-                        { // quotes on both ends.
-                            return value.Substring(1, value.Length - 2);
-                        }
-                    }
-                }
             }
+
             return value;
         }
     }

@@ -191,15 +191,15 @@ namespace GTFS
         /// <param name="latitude2"></param>
         /// <param name="longitude2"></param>
         /// <returns></returns>
-        public static double DistanceInMeter(double latitude1, double longitude1, double latitude2, double longitude2)
+        public static double DistanceInMeter(decimal latitude1, decimal longitude1, decimal latitude2, decimal longitude2)
         {
             var radius_earth = 6371000;
 
             var degToRandian = System.Math.PI / 180;
-            var lat1_rad = latitude1 * degToRandian;
-            var lon1_rad = longitude1 * degToRandian;
-            var lat2_rad = latitude2 * degToRandian;
-            var lon2_rad = longitude2 * degToRandian;
+            var lat1_rad = (double)latitude1 * degToRandian;
+            var lon1_rad = (double)longitude1 * degToRandian;
+            var lat2_rad = (double)latitude2 * degToRandian;
+            var lon2_rad = (double)longitude2 * degToRandian;
             var dLat = (lat2_rad - lat1_rad);
             var dLon = (lon2_rad - lon1_rad);
             var a = System.Math.Pow(System.Math.Sin(dLat / 2), 2) +

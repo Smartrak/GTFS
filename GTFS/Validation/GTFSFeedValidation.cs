@@ -23,6 +23,7 @@
 using GTFS.Entities;
 using System;
 using System.Collections.Generic;
+using GTFS.Entities.Enumerations;
 
 namespace GTFS.Validation
 {
@@ -160,6 +161,15 @@ namespace GTFS.Validation
                         return false;
                     }
                     sequences.Add(stopTime.StopSequence);
+
+                    if (!stopTime.TimepointType.HasValue || stopTime.TimepointType == TimepointType.Exact)
+                    {
+                        if (!stopTime.ArrivalTime.HasValue || !stopTime.DepartureTime.HasValue)
+                        {
+                            messages = string.Format("Trip {0} does not have both arrival and departure times specified for the stop at sequence number {1} which is not specified as an approximate timepoint.", stopTimesPair.Key, stopTime.StopSequence);
+                            return false;
+                        }
+                    }
 
                     if (firstStopTime == null || firstStopTime.StopSequence > stopTime.StopSequence)
                     {
