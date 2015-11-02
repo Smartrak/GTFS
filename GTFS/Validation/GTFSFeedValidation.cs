@@ -162,7 +162,7 @@ namespace GTFS.Validation
                     }
                     sequences.Add(stopTime.StopSequence);
 
-                    if (!stopTime.TimepointType.HasValue || stopTime.TimepointType == TimepointType.Exact)
+                    if (stopTime.TimepointType.HasValue && stopTime.TimepointType == TimepointType.Exact)
                     {
                         if (!stopTime.ArrivalTime.HasValue || !stopTime.DepartureTime.HasValue)
                         {
